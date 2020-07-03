@@ -12,7 +12,7 @@ static const char *fonts[]          = {
     "Noto Sans:size=9:antialias=true:autohint=true",
     "siji:antialias=true:autohint=true"
 };
-//static const char dmenufont[]       = "Noto Sans:size=9";
+static const char dmenufont[]       = "Noto Sans:size=9";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
@@ -66,7 +66,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "termite", NULL };
 static const char *rangercmd[] = { "termite", "-e", "ranger", NULL };
 static const char *cmuscmd[] = { "termite", "-e", "cmus", NULL };
