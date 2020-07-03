@@ -1,18 +1,18 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 9;        /* gaps between windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int gappx     = 5;        /* gaps between windows */
+static const unsigned int snap      = 5;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 20;        /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 static const char *fonts[]          = {
     /*    "Arimo for Powerline:size=10:antialias=true:autohint=true",*/
-    "Noto Sans:size=8:antialias=true:autohint=true",
+    "Noto Sans:size=9:antialias=true:autohint=true",
     "siji:antialias=true:autohint=true"
 };
-static const char dmenufont[]       = "monospace:size=10";
+static const char dmenufont[]       = "Noto Sans:size=9";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
@@ -26,7 +26,8 @@ static char *colors[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+//static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "  \ue1ec", "  \ue26d", "  \ue1e0", "  \ue05c", "  \ue1dd", "  \ue19a", "  \ue1ed" }; /* Add 2 spaces before tag name to center them */
 
 static const Rule rules[] = {
 	/* xprop(1):
