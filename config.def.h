@@ -114,7 +114,7 @@ static Key keys[] = {
     //	{ MODKEY,                   XK_minus,       setgaps,        {.i = -1 } },
     //	{ MODKEY,                   XK_equal,       setgaps,        {.i = +1 } },
     //	{ MODKEY|ShiftMask,         XK_equal,       setgaps,        {.i = 0  } },
-    { MODKEY,			    XK_w,	    spawn,	    SHCMD("$BROWSER") },
+    { MODKEY,			    XK_w,	    spawn,	    SHCMD("brave") },
     { MODKEY|ShiftMask,		    XK_w,	    spawn,	    SHCMD("termite -e nmtui") },
     { MODKEY,                       XK_x,	    spawn,	    SHCMD("~/.local/bin/i3lock/lock.sh") },
     { MODKEY,			    XK_p,	    spawn,	    SHCMD("cmus-remote --pause && pkill -RTMIN+20 dwmblocks") },
