@@ -3,3 +3,4 @@ dwm.o
 drw.o
 *.rej
 *.orig
+patches/
