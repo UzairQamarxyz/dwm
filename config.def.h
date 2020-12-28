@@ -1,20 +1,15 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx = 2; /* border pixel of windows */
-static const unsigned int gappih = 7;   /* horiz inner gap between windows */
-static const unsigned int gappiv = 7;   /* vert inner gap between windows */
-static const unsigned int gappoh =
-    7; /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov =
-    7; /* vert outer gap between windows and screen edge */
-static int smartgaps =
-    0; /* 1 means no outer gap when there is only one window */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int gappx     = 10;       /* gap pixel between windows */
 static const unsigned int snap = 32; /* snap pixel */
+static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int showbar = 1;        /* 0 means no bar */
 static const int topbar = 1;         /* 0 means bottom bar */
-static const char *fonts[] = {"Barlow:size=12:antialias=true",
-                              "Siji:size=14:antialias=true:autohint=true"};
+static const char *fonts[] = {"Barlow:size=12:antialias=true:autohint=true",
+                              "Siji:size=14:antialias=true:autohint=true"
+                             };
 static char normbgcolor[] = "#222222";
 static char normbordercolor[] = "#444444";
 static char normfgcolor[] = "#bbbbbb";
@@ -48,10 +43,6 @@ static char *colors[][3] = {
     [SchemeSel] = {selfgcolor, selbgcolor, selbordercolor},
 };
 
-#define FORCE_VSPLIT                                                           \
-  1 /* nrowgrid layout: force two clients to always split vertically */
-#include "vanitygaps.c"
-
 /* tagging */
 static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7"};
 
@@ -60,22 +51,21 @@ static const Rule rules[] = {
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class      instance    title       tags mask     isfloating   monitor */
-    {"Gimp", NULL, NULL, 0, 1, -1},
-    {"Firefox", NULL, NULL, 1 << 8, 0, -1},
+	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Alacritty",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
 /* layout(s) */
 static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster = 1;    /* number of clients in master area */
-static const int resizehints =
-    1; /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0; /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    {"", tile}, /* first entry is default */
-    {"", NULL}, /* no layout function means floating behavior */
-    {"", monocle}, {"|M|", centeredmaster}, {NULL, NULL},
+    {"[]=", tile}, /* first entry is default */
+    {"><>", NULL}, /* no layout function means floating behavior */
+    {"[M]", monocle}, {NULL, NULL},
 };
 
 /* key definitions */
@@ -97,7 +87,8 @@ static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,    "-nb",
                                  normbgcolor, "-nf", normfgcolor, "-sb",
-                                 selbgcolor,  "-sf", selfgcolor,  NULL};
+                                 selbgcolor,  "-sf", selfgcolor,  NULL
+                                };
 static const char *termcmd[] = {"alacritty", NULL};
 static const char *rangercmd[] = {"alacritty", "-e", "ranger", NULL};
 static const char *cmuscmd[] = {"alacritty", "-e", "cmus", NULL};
@@ -126,7 +117,6 @@ static Key keys[] = {
     {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
     {MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
     {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
-    {MODKEY, XK_u, setlayout, {.v = &layouts[3]}},
     {MODKEY, XK_Page_Down, shiftview, {.i = +1}},
     {MODKEY, XK_Page_Up, shiftview, {.i = -1}},
     {MODKEY, XK_space, setlayout, {0}},
@@ -151,39 +141,53 @@ static Key keys[] = {
     {MODKEY, XK_w, spawn, SHCMD("brave")},
     {MODKEY | ShiftMask, XK_w, spawn, SHCMD("alacritty -e nmtui")},
     {MODKEY, XK_x, spawn, SHCMD("~/.local/bin/i3lock/lock.sh")},
-    {MODKEY, XK_p, spawn,
-     SHCMD("cmus-remote --pause && pkill -RTMIN+20 dwmblocks")},
-    {MODKEY, XK_bracketleft, spawn,
-     SHCMD("cmus-remote --prev && pkill -RTMIN+20 dwmblocks")},
-    {MODKEY | ShiftMask, XK_bracketleft, spawn,
-     SHCMD("cmus-remote --seek -10 && pkill -RTMIN+20 dwmblocks")},
-    {MODKEY, XK_bracketright, spawn,
-     SHCMD("cmus-remote --next && pkill -RTMIN+20 dwmblocks")},
-    {MODKEY | ShiftMask, XK_bracketright, spawn,
-     SHCMD("cmus-remote --seek +10")},
-    {MODKEY, XK_Print, spawn,
-     SHCMD("maim -u -s -l -c 0.157,0.333,0.466,0.4 "
-           "~/Pictures/screenshots/$(date +%s).png")},
-    {MODKEY | ControlMask, XK_Print, spawn,
-     SHCMD("maim -u ~/Pictures/screenshots/$(date +%s).png")},
-    {MODKEY | ShiftMask, XK_Print, spawn,
-     SHCMD("maim -u | xclip -selection clipboard -t image/png")},
-    {0, XK_Print, spawn,
-     SHCMD("maim -u -s -l -c 0.157,0.333,0.466,0.4 | xclip -selection "
-           "clipboard -t image/png")},
-    {0, XF86XK_AudioMute, spawn,
-     SHCMD("amixer set Master toggle && pkill -RTMIN+10 dwmblocks")},
-    {0, XF86XK_AudioRaiseVolume, spawn,
-     SHCMD("amixer set Master 5%+ && pkill -RTMIN+10 dwmblocks")},
-    {0, XF86XK_AudioLowerVolume, spawn,
-     SHCMD("amixer set Master 5%- && pkill -RTMIN+10 dwmblocks")},
+    {   MODKEY, XK_p, spawn,
+        SHCMD("cmus-remote --pause && pkill -RTMIN+20 dwmblocks")
+    },
+    {   MODKEY, XK_bracketleft, spawn,
+        SHCMD("cmus-remote --prev && pkill -RTMIN+20 dwmblocks")
+    },
+    {   MODKEY | ShiftMask, XK_bracketleft, spawn,
+        SHCMD("cmus-remote --seek -10 && pkill -RTMIN+20 dwmblocks")
+    },
+    {   MODKEY, XK_bracketright, spawn,
+        SHCMD("cmus-remote --next && pkill -RTMIN+20 dwmblocks")
+    },
+    {   MODKEY | ShiftMask, XK_bracketright, spawn,
+        SHCMD("cmus-remote --seek +10")
+    },
+    {   MODKEY, XK_Print, spawn,
+        SHCMD("maim -u -s -l -c 0.157,0.333,0.466,0.4 "
+              "~/Pictures/screenshots/$(date +%s).png")
+    },
+    {   MODKEY | ControlMask, XK_Print, spawn,
+        SHCMD("maim -u ~/Pictures/screenshots/$(date +%s).png")
+    },
+    {   MODKEY | ShiftMask, XK_Print, spawn,
+        SHCMD("maim -u | xclip -selection clipboard -t image/png")
+    },
+    {   0, XK_Print, spawn,
+        SHCMD("maim -u -s -l -c 0.157,0.333,0.466,0.4 | xclip -selection "
+              "clipboard -t image/png")
+    },
+    {   0, XF86XK_AudioMute, spawn,
+        SHCMD("amixer set Master toggle && pkill -RTMIN+10 dwmblocks")
+    },
+    {   0, XF86XK_AudioRaiseVolume, spawn,
+        SHCMD("amixer set Master 5%+ && pkill -RTMIN+10 dwmblocks")
+    },
+    {   0, XF86XK_AudioLowerVolume, spawn,
+        SHCMD("amixer set Master 5%- && pkill -RTMIN+10 dwmblocks")
+    },
     {0, XF86XK_MonBrightnessUp, spawn, SHCMD("xbacklight -inc 10")},
     {0, XF86XK_MonBrightnessDown, spawn, SHCMD("xbacklight -dec 10")},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
-        TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6)
+    TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6)
     /*	TAGKEYS(                        XK_8,                      7)
             TAGKEYS(                        XK_9,                      8)*/
-    {MODKEY, XK_Left, moveresize, {.v = "-10x 0y 0w 0h"}},
+    {
+        MODKEY, XK_Left, moveresize, {.v = "-10x 0y 0w 0h"}
+    },
     {MODKEY, XK_Right, moveresize, {.v = "10x 0y 0w 0h"}},
     {MODKEY, XK_Down, moveresize, {.v = "0x 10y 0w 0h"}},
     {MODKEY, XK_Up, moveresize, {.v = "0x -10y 0w 0h"}},
@@ -211,19 +215,47 @@ static Button buttons[] = {
     {ClkTagBar, MODKEY, Button3, toggletag, {0}},
 };
 
-void setlayoutex(const Arg *arg) { setlayout(&((Arg){.v = &layouts[arg->i]})); }
+void setlayoutex(const Arg *arg) {
+    setlayout(&((Arg) {
+        .v = &layouts[arg->i]
+    }));
+}
 
-void viewex(const Arg *arg) { view(&((Arg){.ui = 1 << arg->ui})); }
+void viewex(const Arg *arg) {
+    view(&((Arg) {
+        .ui = 1 << arg->ui
+    }));
+}
 
-void viewall(const Arg *arg) { view(&((Arg){.ui = ~0})); }
+void viewall(const Arg *arg) {
+    view(&((Arg) {
+        .ui = ~0
+    }));
+}
 
-void toggleviewex(const Arg *arg) { toggleview(&((Arg){.ui = 1 << arg->ui})); }
+void toggleviewex(const Arg *arg) {
+    toggleview(&((Arg) {
+        .ui = 1 << arg->ui
+    }));
+}
 
-void tagex(const Arg *arg) { tag(&((Arg){.ui = 1 << arg->ui})); }
+void tagex(const Arg *arg) {
+    tag(&((Arg) {
+        .ui = 1 << arg->ui
+    }));
+}
 
-void toggletagex(const Arg *arg) { toggletag(&((Arg){.ui = 1 << arg->ui})); }
+void toggletagex(const Arg *arg) {
+    toggletag(&((Arg) {
+        .ui = 1 << arg->ui
+    }));
+}
 
-void tagall(const Arg *arg) { tag(&((Arg){.ui = ~0})); }
+void tagall(const Arg *arg) {
+    tag(&((Arg) {
+        .ui = ~0
+    }));
+}
 
 /* signal definitions */
 /* signum must be greater than 0 */
@@ -231,7 +263,6 @@ void tagall(const Arg *arg) { tag(&((Arg){.ui = ~0})); }
  */
 static Signal signals[] = {
     /* signum           function */
-    {"xrdb", xrdb},
     {"focusstack", focusstack},
     {"setmfact", setmfact},
     {"togglebar", togglebar},
