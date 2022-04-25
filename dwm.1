@@ -100,12 +100,6 @@ Sets monocle layout.
 .B Mod1\-space
 Toggles between current and previous layout.
 .TP
-.B Mod1\-Control\-,
-Cycles backwards in layout list.
-.TP
-.B Mod1\-Control\-.
-Cycles forwards in layout list.
-.TP
 .B Mod1\-j
 Focus next window.
 .TP
@@ -129,6 +123,9 @@ Zooms/cycles focused window to/from master area (tiled layouts only).
 .TP
 .B Mod1\-Shift\-c
 Close focused window.
+.TP
+.B Mod1\-Shift\-f
+Toggle fullscreen for focused window.
 .TP
 .B Mod1\-Shift\-space
 Toggle focused window between tiled and floating state.
@@ -154,11 +151,18 @@ View all windows with any tag.
 .B Mod1\-Control\-[1..n]
 Add/remove all windows with nth tag to/from the view.
 .TP
+.B Mod1\--
+Decrease the gaps around windows.
+.TP
+.B Mod1\-=
+Increase the gaps around windows.
+.TP
+.B Mod1\-Shift-=
+Reset the gaps around windows to
+.BR 0 .
+.TP
 .B Mod1\-Shift\-q
 Quit dwm.
-.TP
-.B Mod1\-Control\-Shift\-q
-Restart dwm.
 .SS Mouse commands
 .TP
 .B Mod1\-Button1
@@ -187,13 +191,6 @@ This file is started before any autostart.sh; dwm waits for its termination.
 .SH CUSTOMIZATION
 dwm is customized by creating a custom config.h and (re)compiling the source
 code. This keeps it fast, secure and simple.
-.SH SIGNALS
-.TP
-.B SIGHUP - 1
-Restart the dwm process.
-.TP
-.B SIGTERM - 15
-Cleanly terminate the dwm process.
 .SH SEE ALSO
 .BR dmenu (1),
 .BR st (1)
