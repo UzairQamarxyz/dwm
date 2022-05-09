@@ -58,7 +58,7 @@ static char *colors[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7"};
+static const char *tags[] = { "", "", "", "", "", "", ""};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -67,6 +67,7 @@ static const Rule rules[] = {
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{"Alacritty", NULL, NULL, 0, 0, 1, 0, -1},
+	{"Dragon-drag-and-drop",   NULL,     "dragon",           1,         0,          1,           0,         -1},
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
@@ -128,7 +129,6 @@ static Key keys[] = {
 	{MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
 	{MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
 	{MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
-	{MODKEY, XK_r, setlayout, {.v = &layouts[3]} },
 	{MODKEY, XK_Page_Down, viewnext, {.i = +1}},
 	{MODKEY, XK_Page_Up, viewprev, {.i = -1}},
 	{MODKEY, XK_space, setlayout, {0}},
