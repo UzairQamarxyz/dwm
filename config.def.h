@@ -57,6 +57,10 @@ static char *colors[][3] = {
        [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 
+/* swallow emacs */
+static const char emacsclient[] = "emacsclient";
+static const char emacsname[] = "emacs@";
+
 /* tagging */
 static const char *tags[] = { "", "", "", "", "", "", ""};
 
@@ -67,7 +71,6 @@ static const Rule rules[] = {
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{"Alacritty", NULL, NULL, 0, 0, 1, 0, -1},
-	{"Dragon-drag-and-drop",   NULL,     "dragon",           1,         0,          1,           0,         -1},
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
