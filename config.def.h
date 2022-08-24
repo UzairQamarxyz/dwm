@@ -19,8 +19,7 @@ static const int horizpadbar = 2; /* horizontal padding for statusbar */
 static const int vertpadbar = 5;  /* vertical padding for statusbar */
 static const char *fonts[] = {
     "Iosevka Custom:size=14:antialias=true:autohint=true"};
-static const char dmenufont[] =
-    "Iosevka Custom:size=14:antialias=true:autohint=true";
+static const char dmenufont[] = "Iosevka Custom:size=14:antialias=true:autohint=true";
 static char normbgcolor[] = "#222222";
 static char normbordercolor[] = "#444444";
 static char normfgcolor[] = "#bbbbbb";
@@ -94,15 +93,10 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
-  {1, {{MODKEY, KEY}}, view, {.ui = 1 << TAG}},                                \
-      {1, {{MODKEY | ControlMask, KEY}}, toggleview, {.ui = 1 << TAG}},        \
-      {1, {{MODKEY | ShiftMask, KEY}}, tag, {.ui = 1 << TAG}},                 \
-      {1,                                                                      \
-       {{MODKEY | ControlMask | ShiftMask, KEY}},                              \
-       toggletag,                                                              \
-       {.ui = 1 << TAG}},                                                      \
-      {1, {{MODKEY | ControlMask, KEY}}, focusnthmon, {.i = TAG}},             \
-      {1, {{MODKEY | ControlMask | ShiftMask, KEY}}, tagnthmon, {.i = TAG}},
+  {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
+      {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
+      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
+      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd)                                                             \
@@ -115,90 +109,69 @@ static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {"dmenu_run", "-m", dmenumon, NULL};
 static const char *termcmd[] = {"alacritty", NULL};
-static const char *emacs[] = {"emacs", NULL};
 static const char *rangercmd[] = {"alacritty", "-e", "ranger", NULL};
 static const char *cmuscmd[] = {"alacritty", "-e", "cmus", NULL};
 
 #include <X11/XF86keysym.h>
 
-static Keychord keychords[] = {
+static Key keys[] = {
     /* modifier                     key             function        argument */
     // APPLICATIONS
-    {1, {{MODKEY, XK_d}}, spawn, {.v = dmenucmd}},
-    {2, {{MODKEY, XK_e}, {0, XK_e}}, spawn, {.v = rangercmd}},
-    {2, {{MODKEY, XK_e}, {0, XK_D}}, spawn, SHCMD("alacritty -e ranger ~/Documents")},
-    {2, {{MODKEY, XK_e}, {0, XK_d}}, spawn, SHCMD("alacritty -e ranger ~/Downloads")},
-    {2, {{MODKEY, XK_e}, {0, XK_c}}, spawn, SHCMD("alacritty -e ranger ~/.config")},
-    {2, {{MODKEY, XK_e}, {0 | ShiftMask, XK_c}}, spawn, SHCMD("alacritty -e ranger ~/.cache")},
-    {3, {{MODKEY, XK_e}, {0, XK_w}, {0, XK_c}}, spawn, SHCMD("alacritty -e ranger ~/Documents/work/copebit")},
-    {3, {{MODKEY, XK_e}, {0, XK_w}, {0, XK_x}}, spawn, SHCMD("alacritty -e ranger ~/Documents/work/xgrid")},
-    {3, {{MODKEY, XK_e}, {0, XK_w}, {0, XK_t}}, spawn, SHCMD("alacritty -e ranger ~/Documents/work/testing")},
-    {2, {{MODKEY, XK_e}, {0, XK_g}}, spawn, SHCMD("alacritty -e ranger ~/Documents/git")},
-    {1, {{MODKEY, XK_c}}, spawn, {.v = cmuscmd}},
-    {1, {{NULL, XF86XK_Calculator}}, spawn, SHCMD("emacsclient -c -a 'emacs'")},
-    {1, {{MODKEY, XK_Return}}, spawn, {.v = termcmd}},
-    {1, {{MODKEY | ShiftMask, XK_q}}, killclient, {0}},
+    {MODKEY, XK_d, spawn, {.v = dmenucmd}},
+    {MODKEY, XK_e, spawn, {.v = rangercmd}},
+    {MODKEY, XK_c, spawn, {.v = cmuscmd}},
+    {MODKEY, XK_c, spawn, {.v = cmuscmd}},
+    {NULL, XF86XK_Calculator, spawn, SHCMD("emacsclient -c -a 'emacs'")},
+    {MODKEY, XK_Return, spawn, {.v = termcmd}},
+    {MODKEY | ShiftMask, XK_q, killclient, {0}},
 
     // LAYOUTS
-    {1, {{MODKEY, XK_j}}, focusstack, {.i = +1}},
-    {1, {{MODKEY, XK_k}}, focusstack, {.i = -1}},
-    {1, {{MODKEY | ShiftMask, XK_j}}, inplacerotate, {.i = +1}},
-    {1, {{MODKEY | ShiftMask, XK_k}}, inplacerotate, {.i = -1}},
-    {1, {{MODKEY, XK_i}}, incnmaster, {.i = +1}},
-    {1, {{MODKEY | ShiftMask, XK_i}}, incnmaster, {.i = -1}},
-    {1, {{MODKEY, XK_h}}, setmfact, {.f = -0.05}},
-    {1, {{MODKEY, XK_l}}, setmfact, {.f = +0.05}},
-    {1, {{MODKEY, XK_t}}, setlayout, {.v = &layouts[0]}},
-    {1, {{MODKEY, XK_f}}, setlayout, {.v = &layouts[1]}},
-    {1, {{MODKEY, XK_m}}, setlayout, {.v = &layouts[2]}},
-    {1, {{MODKEY | ShiftMask, XK_d}}, setlayout, {.v = &layouts[3]}},
-    {1, {{MODKEY | ShiftMask, XK_m}}, setlayout, {.v = &layouts[4]}},
-    {1, {{MODKEY, XK_Page_Down}}, viewnext, {.i = +1}},
-    {1, {{MODKEY | ShiftMask, XK_Page_Down}}, tagtonext, {.i = +1}},
-    {1, {{MODKEY, XK_Page_Up}}, viewprev, {.i = -1}},
-    {1, {{MODKEY | ShiftMask, XK_Page_Up}}, tagtoprev, {.i = +1}},
-    {1, {{MODKEY, XK_space}}, setlayout, {0}},
-    {1, {{MODKEY | ShiftMask, XK_space}}, togglefloating, {0}},
-    {1, {{MODKEY | ShiftMask, XK_f}}, togglefullscr, {0}},
-    {1, {{MODKEY | ShiftMask, XK_Return}}, zoom, {0}},
+    {MODKEY, XK_j, focusstack, {.i = +1}},
+    {MODKEY, XK_k, focusstack, {.i = -1}},
+    {MODKEY | ShiftMask, XK_j, inplacerotate, {.i = +1}},
+    {MODKEY | ShiftMask, XK_k, inplacerotate, {.i = -1}},
+    {MODKEY, XK_i, incnmaster, {.i = +1}},
+    {MODKEY | ShiftMask, XK_i, incnmaster, {.i = -1}},
+    {MODKEY, XK_h, setmfact, {.f = -0.05}},
+    {MODKEY, XK_l, setmfact, {.f = +0.05}},
+    {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
+    {MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
+    {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
+    {MODKEY | ShiftMask, XK_d, setlayout, {.v = &layouts[3]}},
+    {MODKEY | ShiftMask, XK_m, setlayout, {.v = &layouts[4]}},
+    {MODKEY, XK_Page_Down, viewnext, {.i = +1}},
+    {MODKEY | ShiftMask, XK_Page_Down, tagtonext, {.i = +1}},
+    {MODKEY, XK_Page_Up, viewprev, {.i = -1}},
+    {MODKEY | ShiftMask, XK_Page_Up, tagtoprev, {.i = +1}},
+    {MODKEY, XK_space, setlayout, {0}},
+    {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
+    {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
+    {MODKEY | ShiftMask, XK_Return, zoom, {0}},
 
     // WORKSPACES
-    {1, {{MODKEY, XK_b}}, togglebar, {0}},
-    {1, {{MODKEY, XK_Tab}}, view, {0}},
-    {1, {{MODKEY, XK_0}}, view, {.ui = ~0}},
-    {1, {{MODKEY | ShiftMask, XK_0}}, tag, {.ui = ~0}},
+    {MODKEY, XK_b, togglebar, {0}},
+    {MODKEY, XK_Tab, view, {0}},
+    {MODKEY, XK_0, view, {.ui = ~0}},
+    {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
 
     // HOTKEYS
-    {1, {{MODKEY, XK_F5}}, xrdb, {.v = NULL}},
-    {1, {{MODKEY, XK_F9}}, spawn, SHCMD("~/.local/bin/dmenumount")},
-    {1, {{MODKEY, XK_F10}}, spawn, SHCMD("~/.local/bin/dmenumount")},
-    {1, {{MODKEY, XK_F7}}, spawn, SHCMD("~/.local/bin/displayselect")},
-    {1, {{MODKEY, XK_BackSpace}}, spawn, SHCMD("~/.local/bin/sysact")},
-    {2, {{MODKEY, XK_w}, {0, XK_1}}, spawn, SHCMD("chromium --profile-directory='Default'")},
-    {2, {{MODKEY, XK_w}, {0, XK_2}}, spawn, SHCMD("chromium --profile-directory='Profile 1'")},
-    {2, {{MODKEY, XK_w}, {0, XK_3}}, spawn, SHCMD("chromium --profile-directory='Profile 2'")},
-    {2, {{MODKEY, XK_w}, {0, XK_4}}, spawn, SHCMD("chromium --profile-directory='Profile 3'")},
-    {1, {{MODKEY | ShiftMask, XK_w}}, spawn, SHCMD("alacritty -e nmtui connect")},
-    {1, {{MODKEY, XK_x}}, spawn, SHCMD("~/.local/bin/i3lock/lock.sh")},
-    {1,
-     {{MODKEY, XK_p}},
-     spawn,
+    {MODKEY, XK_F5, xrdb, {.v = NULL}},
+    {MODKEY, XK_F9, spawn, SHCMD("~/.local/bin/dmenumount")},
+    {MODKEY, XK_F10, spawn, SHCMD("~/.local/bin/dmenumount")},
+    {MODKEY, XK_F7, spawn, SHCMD("~/.local/bin/displayselect")},
+    {MODKEY, XK_BackSpace, spawn, SHCMD("~/.local/bin/sysact")},
+    {MODKEY, XK_w, spawn, SHCMD("chromium")},
+    {MODKEY | ShiftMask, XK_w, spawn, SHCMD("alacritty -e nmtui")},
+    {MODKEY, XK_x, spawn, SHCMD("~/.local/bin/i3lock/lock.sh")},
+    {MODKEY, XK_p, spawn,
      SHCMD("cmus-remote --pause && pkill -RTMIN+20 dwmblocks")},
-    {1,
-     {{MODKEY, XK_bracketleft}},
-     spawn,
+    {MODKEY, XK_bracketleft, spawn,
      SHCMD("cmus-remote --prev && pkill -RTMIN+20 dwmblocks")},
-    {1,
-     {{MODKEY | ShiftMask, XK_bracketleft}},
-     spawn,
+    {MODKEY | ShiftMask, XK_bracketleft, spawn,
      SHCMD("cmus-remote --seek -10 && pkill -RTMIN+20 dwmblocks")},
-    {1,
-     {{MODKEY, XK_bracketright}},
-     spawn,
+    {MODKEY, XK_bracketright, spawn,
      SHCMD("cmus-remote --next && pkill -RTMIN+20 dwmblocks")},
-    {1,
-     {{MODKEY | ShiftMask, XK_bracketright}},
-     spawn,
+    {MODKEY | ShiftMask, XK_bracketright, spawn,
      SHCMD("cmus-remote --seek +10")},
     //	{MODKEY, XK_p, spawn,
     //		SHCMD("qdbus org.mpris.MediaPlayer2.spotify
@@ -211,36 +184,27 @@ static Keychord keychords[] = {
     //		SHCMD("qdbus org.mpris.MediaPlayer2.spotify
     /// org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next && pkill
     // -RTMIN+20 dwmblocks")},
-    {1, {{0, XK_Print}}, spawn, SHCMD("/usr/bin/flameshot gui")},
-    {1,
-     {{0, XF86XK_AudioMute}},
-     spawn,
+    {0, XK_Print, spawn, SHCMD("/usr/bin/flameshot gui")},
+    {0, XF86XK_AudioMute, spawn,
      SHCMD("amixer set Master toggle && pkill -RTMIN+10 dwmblocks")},
-    {1,
-     {{0, XF86XK_AudioRaiseVolume}},
-     spawn,
+    {0, XF86XK_AudioRaiseVolume, spawn,
      SHCMD("amixer set Master 5%+ && pkill -RTMIN+10 dwmblocks")},
-    {1,
-     {{0, XF86XK_AudioLowerVolume}},
-     spawn,
+    {0, XF86XK_AudioLowerVolume, spawn,
      SHCMD("amixer set Master 5%- && pkill -RTMIN+10 dwmblocks")},
-    {1, {{0, XF86XK_MonBrightnessUp}}, spawn, SHCMD("brightnessctl set 10%+")},
-    {1,
-     {{0, XF86XK_MonBrightnessDown}},
-     spawn,
-     SHCMD("brightnessctl set 10%-")},
+    {0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl set 10%+")},
+    {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-")},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6)
     /*	TAGKEYS(                        XK_8,                      7)
             TAGKEYS(                        XK_9,                      8)*/
-    {1, {{MODKEY, XK_Left}}, moveresize, {.v = "-10x 0y 0w 0h"}},
-    {1, {{MODKEY, XK_Right}}, moveresize, {.v = "10x 0y 0w 0h"}},
-    {1, {{MODKEY, XK_Down}}, moveresize, {.v = "0x 10y 0w 0h"}},
-    {1, {{MODKEY, XK_Up}}, moveresize, {.v = "0x -10y 0w 0h"}},
-    {1, {{MODKEY | ShiftMask, XK_Left}}, moveresize, {.v = "0x 0y -10w 0h"}},
-    {1, {{MODKEY | ShiftMask, XK_Right}}, moveresize, {.v = "0x 0y 10w 0h"}},
-    {1, {{MODKEY | ShiftMask, XK_Down}}, moveresize, {.v = "0x 0y 0w 10h"}},
-    {1, {{MODKEY | ShiftMask, XK_Up}}, moveresize, {.v = "0x 0y 0w -10h"}},
+    {MODKEY, XK_Left, moveresize, {.v = "-10x 0y 0w 0h"}},
+    {MODKEY, XK_Right, moveresize, {.v = "10x 0y 0w 0h"}},
+    {MODKEY, XK_Down, moveresize, {.v = "0x 10y 0w 0h"}},
+    {MODKEY, XK_Up, moveresize, {.v = "0x -10y 0w 0h"}},
+    {MODKEY | ShiftMask, XK_Left, moveresize, {.v = "0x 0y -10w 0h"}},
+    {MODKEY | ShiftMask, XK_Right, moveresize, {.v = "0x 0y 10w 0h"}},
+    {MODKEY | ShiftMask, XK_Down, moveresize, {.v = "0x 0y 0w 10h"}},
+    {MODKEY | ShiftMask, XK_Up, moveresize, {.v = "0x 0y 0w -10h"}},
 };
 
 /* button definitions */
