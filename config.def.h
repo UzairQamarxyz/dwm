@@ -18,7 +18,7 @@ static const unsigned int gappov =
 static int smartgaps =
     0; /* 1 means no outer gap when there is only one window */
 static const int horizpadbar = 2; /* horizontal padding for statusbar */
-static const int vertpadbar = 5;  /* vertical padding for statusbar */
+static const int vertpadbar = 8;  /* vertical padding for statusbar */
 static const char *fonts[] = {
     "Iosevka Custom:size=14:antialias=true:autohint=true"};
 static const char dmenufont[] = "Iosevka Custom:size=14:antialias=true:autohint=true";
@@ -162,9 +162,9 @@ static Key keys[] = {
     {MODKEY, XK_F10, spawn, SHCMD("~/.local/bin/dmenumount")},
     {MODKEY, XK_F7, spawn, SHCMD("~/.local/bin/displayselect")},
     {MODKEY, XK_BackSpace, spawn, SHCMD("~/.local/bin/sysact")},
-    {MODKEY, XK_w, spawn, SHCMD("chromium")},
+    {MODKEY, XK_w, spawn, SHCMD("firefox")},
     {MODKEY | ShiftMask, XK_w, spawn, SHCMD("alacritty -e nmtui")},
-    {MODKEY, XK_x, spawn, SHCMD("~/.local/bin/i3lock/lock.sh")},
+    {MODKEY, XK_x, spawn, SHCMD("betterlockscreen --lock")},
     {MODKEY, XK_p, spawn,
      SHCMD("cmus-remote --pause && pkill -RTMIN+20 dwmblocks")},
     {MODKEY, XK_bracketleft, spawn,
