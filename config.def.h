@@ -6,15 +6,16 @@ static const unsigned int gappx     = 10;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static char *fonts[]          = { "IosevkaCustom Nerd Font:size=12" };
-static char dmenufont[]       = "IosevkaCustom Nerd Font:size=12";
-static char normbgcolor[]           = "#222222";
-static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#005577";
-static char selbgcolor[]            = "#005577";
-static char *colors[][3]      = {
+static const char *fonts[]          = { "IosevkaCustom Nerd Font:size=12" };
+static const char dmenufont[]       = "IosevkaCustom Nerd Font:size=12";
+static const char termcol0[] =
+static const char normbgcolor[]           = "#222222";
+static const char normbordercolor[]       = "#444444";
+static const char normfgcolor[]           = "#bbbbbb";
+static const char selfgcolor[]            = "#eeeeee";
+static const char selbordercolor[]        = "#005577";
+static const char selbgcolor[]            = "#005577";
+static const char *colors[][3]      = {
     /*               fg         bg         border   */
     [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
     [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
@@ -72,20 +73,6 @@ static const char *screenshot[]  = { "flameshot", "gui", NULL };
 static const char *brightnessup[]  = { "brightnessctl", "set", "10%+", NULL };
 static const char *brightnessdown[]  = { "brightnessctl", "set", "10%-", NULL };
 
-/*
- * Xresources preferences to load at startup
- */
-ResourcePref resources[] = {
-		{ "fonts",              STRING,  &fonts },
-		{ "dmenufont",          STRING,  &dmenufont },
-		{ "normbgcolor",        STRING,  &normbgcolor },
-		{ "normbordercolor",    STRING,  &normbordercolor },
-		{ "normfgcolor",        STRING,  &normfgcolor },
-		{ "selbgcolor",         STRING,  &selbgcolor },
-		{ "selbordercolor",     STRING,  &selbordercolor },
-		{ "selfgcolor",         STRING,  &selfgcolor },
-};
-
 #include <X11/XF86keysym.h>
 
 static const Key keys[] = {
@@ -99,16 +86,16 @@ static const Key keys[] = {
     { MODKEY,                       XK_x,                     spawn,          {.v = lockscreen}},
     { 0,                            XF86XK_Calculator,        spawn,          {.v = emacs} },
     { 0,                            XK_Print,                 spawn,          {.v = screenshot} },
-    { MODKEY,                       XK_p,                     spawn,          SHCMD("cmus-remote --pause")},
-    { MODKEY,                       XK_bracketleft,           spawn,          SHCMD("cmus-remote --prev")},
-    { MODKEY|ShiftMask,             XK_bracketleft,           spawn,          SHCMD("cmus-remote --seek")},
-    { MODKEY,                       XK_bracketright,          spawn,          SHCMD("cmus-remote --next")},
-    { MODKEY|ShiftMask,             XK_bracketright,          spawn,          SHCMD("cmus-remote --seek +10")},
-    { 0,                            XF86XK_AudioMute,         spawn,          SHCMD("amixer set Master toggle")},
-    { 0,                            XF86XK_AudioRaiseVolume,  spawn,          SHCMD("amixer set Master 5%+")},
-    { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer set Master 5%-")},
-    { 0,                            XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup} },
-    { 0,                            XF86XK_MonBrightnessDown, spawn,          {.v = brightnessdown} },
+    { MODKEY,                       XK_p,                     spawn,          SHCMD("cmus-remote --pause && pkill -RTMIN+20 dwmblocks")},
+    { MODKEY,                       XK_bracketleft,           spawn,          SHCMD("cmus-remote --prev && pkill -RTMIN+20 dwmblocks")},
+    { MODKEY|ShiftMask,             XK_bracketleft,           spawn,          SHCMD("cmus-remote --seek -10 && pkill -RTMIN+20 dwmblocks")},
+    { MODKEY,                       XK_bracketright,          spawn,          SHCMD("cmus-remote --next && pkill -RTMIN+20 dwmblocks")},
+    { MODKEY|ShiftMask,             XK_bracketright,          spawn,          SHCMD("cmus-remote --seek +10 && pkill -RTMIN+20 dwmblocks")},
+    { 0,                            XF86XK_AudioMute,         spawn,          SHCMD("amixer set Master toggle && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioRaiseVolume,  spawn,          SHCMD("amixer set Master 5%+ && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer set Master 5%- && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup}},
+    { 0,                            XF86XK_MonBrightnessDown, spawn,          {.v = brightnessdown}},
 
     { MODKEY,                       XK_b,                     togglebar,      {0} },
     { MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
@@ -135,6 +122,7 @@ static const Key keys[] = {
     { MODKEY,                       XK_period,                focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,             XK_comma,                 tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period,                tagmon,         {.i = +1 } },
+    { MODKEY,                       XK_F5,                    xrdb,           {.v = NULL } },
     { MODKEY,                       XK_Page_Down,             viewnext,       {0} },
     { MODKEY,                       XK_Page_Up,               viewprev,       {0} },
     { MODKEY|ShiftMask,             XK_Page_Down,             tagtonext,      {0} },
