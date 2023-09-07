@@ -8,8 +8,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 6;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=12" };
-static const char dmenufont[]       = "JetBrainsMono Nerd Font:size=12";
+static const char *fonts[]          = { "IosevkaCustom Nerd Font:size=12" };
+static const char dmenufont[]       = "IosevkaCustom Nerd Font:size=12";
 static char normbgcolor[]           = "#222223";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
@@ -131,6 +131,7 @@ static const Key keys[] = {
     { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer set Master 5%- && pkill -RTMIN+10 dwmblocks")},
     { 0,                            XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup}},
     { 0,                            XF86XK_MonBrightnessDown, spawn,          {.v = brightnessdown}},
+    { 0,                            XF86XK_Calculator,        spawn,          {.v = emacs}},
 
     { MODKEY,                       XK_b,                     togglebar,      {0} },
     { MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
