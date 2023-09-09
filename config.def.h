@@ -131,7 +131,6 @@ static const Key keys[] = {
     { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer set Master 5%- && pkill -RTMIN+10 dwmblocks")},
     { 0,                            XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup}},
     { 0,                            XF86XK_MonBrightnessDown, spawn,          {.v = brightnessdown}},
-    { 0,                            XF86XK_Calculator,        spawn,          {.v = emacs}},
 
     { MODKEY,                       XK_b,                     togglebar,      {0} },
     { MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
