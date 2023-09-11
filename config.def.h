@@ -158,10 +158,10 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_comma,                 tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period,                tagmon,         {.i = +1 } },
     { MODKEY,                       XK_F5,                    xrdb,           {.v = NULL } },
-    { MODKEY,                       XK_Left,                  viewnext,       {0} },
-    { MODKEY,                       XK_Right,                 viewprev,       {0} },
-    { MODKEY|ShiftMask,             XK_Left,                  tagtonext,      {0} },
-    { MODKEY|ShiftMask,             XK_Right,                 tagtoprev,      {0} },
+    { MODKEY,                       XK_Right,                 viewnext,       {0} },
+    { MODKEY,                       XK_Left,                  viewprev,       {0} },
+    { MODKEY|ShiftMask,             XK_Right,                 tagtonext,      {0} },
+    { MODKEY|ShiftMask,             XK_Left,                  tagtoprev,      {0} },
     TAGKEYS(                        XK_1,                                     0)
     TAGKEYS(                        XK_2,                                     1)
     TAGKEYS(                        XK_3,                                     2)
