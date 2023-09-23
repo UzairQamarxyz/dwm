@@ -121,6 +121,7 @@ static const Key keys[] = {
     { MODKEY,                       XK_x,                     spawn,          {.v = lockscreen}},
     { 0,                            XF86XK_Calculator,        spawn,          {.v = emacs} },
     { 0,                            XK_Print,                 spawn,          {.v = screenshot} },
+    { MODKEY,                       XK_BackSpace,             spawn,          SHCMD("sysact")},
     { MODKEY,                       XK_p,                     spawn,          SHCMD("cmus-remote --pause && pkill -RTMIN+20 dwmblocks")},
     { MODKEY,                       XK_bracketleft,           spawn,          SHCMD("cmus-remote --prev && pkill -RTMIN+20 dwmblocks")},
     { MODKEY|ShiftMask,             XK_bracketleft,           spawn,          SHCMD("cmus-remote --seek -10 && pkill -RTMIN+20 dwmblocks")},
