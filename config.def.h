@@ -7,7 +7,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 6;        /* vertical padding for statusbar */
+static const int vertpadbar         = 12;        /* vertical padding for statusbar */
 static const char *fonts[]          = { "IosevkaCustom Nerd Font:size=12" };
 static const char dmenufont[]       = "IosevkaCustom Nerd Font:size=12";
 static char normbgcolor[]           = "#222223";
