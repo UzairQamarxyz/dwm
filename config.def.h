@@ -16,40 +16,40 @@ static char normfgcolor[]           = "#bbbbbb";
 static char selfgcolor[]            = "#eeeeee";
 static char selbordercolor[]        = "#005577";
 static char selbgcolor[]            = "#005577";
-/* static char termcol0[] = "#000000"; /\* black   *\/ */
-/* static char termcol1[] = "#ff0000"; /\* red     *\/ */
-/* static char termcol2[] = "#33ff00"; /\* green   *\/ */
-/* static char termcol3[] = "#ff0099"; /\* yellow  *\/ */
-/* static char termcol4[] = "#0066ff"; /\* blue    *\/ */
-/* static char termcol5[] = "#cc00ff"; /\* magenta *\/ */
-/* static char termcol6[] = "#00ffff"; /\* cyan    *\/ */
-/* static char termcol7[] = "#d0d0d0"; /\* white   *\/ */
-/* static char termcol8[]  = "#808080"; /\* black   *\/ */
-/* static char termcol9[]  = "#ff0000"; /\* red     *\/ */
-/* static char termcol10[] = "#33ff00"; /\* green   *\/ */
-/* static char termcol11[] = "#ff0099"; /\* yellow  *\/ */
-/* static char termcol12[] = "#0066ff"; /\* blue    *\/ */
-/* static char termcol13[] = "#cc00ff"; /\* magenta *\/ */
-/* static char termcol14[] = "#00ffff"; /\* cyan    *\/ */
-/* static char termcol15[] = "#ffffff"; /\* white   *\/ */
-/* static char *termcolor[] = { */
-/*   termcol0, */
-/*   termcol1, */
-/*   termcol2, */
-/*   termcol3, */
-/*   termcol4, */
-/*   termcol5, */
-/*   termcol6, */
-/*   termcol7, */
-/*   termcol8, */
-/*   termcol9, */
-/*   termcol10, */
-/*   termcol11, */
-/*   termcol12, */
-/*   termcol13, */
-/*   termcol14, */
-/*   termcol15, */
-/* }; */
+static char barcol0[] = "#000000"; /* black   */
+static char barcol1[] = "#ff0000"; /* red     */
+static char barcol2[] = "#33ff00"; /* green   */
+static char barcol3[] = "#ff0099"; /* yellow  */
+static char barcol4[] = "#0066ff"; /* blue    */
+static char barcol5[] = "#cc00ff"; /* magenta */
+static char barcol6[] = "#00ffff"; /* cyan    */
+static char barcol7[] = "#d0d0d0"; /* white   */
+static char barcol8[]  = "#808080"; /* black   */
+static char barcol9[]  = "#ff0000"; /* red     */
+static char barcol10[] = "#33ff00"; /* green   */
+static char barcol11[] = "#ff0099"; /* yellow  */
+static char barcol12[] = "#0066ff"; /* blue    */
+static char barcol13[] = "#cc00ff"; /* magenta */
+static char barcol14[] = "#00ffff"; /* cyan    */
+static char barcol15[] = "#ffffff"; /* white   */
+static char *barcolors[] = {
+  barcol0,
+  barcol1,
+  barcol2,
+  barcol3,
+  barcol4,
+  barcol5,
+  barcol6,
+  barcol7,
+  barcol8,
+  barcol9,
+  barcol10,
+  barcol11,
+  barcol12,
+  barcol13,
+  barcol14,
+  barcol15,
+};
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
     [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
