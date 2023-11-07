@@ -858,7 +858,7 @@ drawbar(Monitor *m)
 		}
 		buffer[wr] = '\0';
 
-		tw += TEXTW(buffer) - lrpad;
+		tw += TEXTW(buffer) - lrpad + 2;
 		x = m->ww - tw;
 
 		resetfntlist(fset, drw->fonts);
