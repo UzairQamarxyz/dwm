@@ -813,7 +813,7 @@ drawbar(Monitor *m)
 		int fg = 7;
 		int bg = 0;
 		int fmt = 0;
-		int lp = lrpad / 2 + 3;
+		int lp = lrpad / 2;
 		Fnt *fset = drw->fonts;
 
 		memcpy(scm, scheme[SchemeNorm], sizeof(scm));
@@ -872,7 +872,7 @@ drawbar(Monitor *m)
 				if (stext[rd + alen + 2] == 'm') {
 					buffer[wr] = '\0';
 					pw = TEXTW(buffer) - lrpad;
-					drw_text(drw, x, 0, pw + lp, bh, lp, buffer, fmt & REVERSE);
+					drw_text(drw, x, 0, pw + lp + lrpad, bh, lp, buffer, fmt & REVERSE);
 					if (fmt & UNDERLINE)
 						drw_rect(drw, x, (bh + drw->fonts->h) / 2, pw, 1, 1, fmt & REVERSE); 
 					if (fmt & STRIKETHROUGH)
@@ -972,7 +972,7 @@ drawbar(Monitor *m)
 
 		buffer[wr] = '\0';
 		pw = TEXTW(buffer) - lrpad;
-		drw_text(drw, x, 0, pw + lp, bh, lp, buffer, fmt & REVERSE);
+		drw_text(drw, x, 0, pw + lp + lrpad, bh, lp, buffer, fmt & REVERSE);
 		if (fmt & UNDERLINE)
 			drw_rect(drw, x, (bh + drw->fonts->h) / 2, pw, 1, 1, fmt & REVERSE); 
 		if (fmt & STRIKETHROUGH)
