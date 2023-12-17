@@ -1001,7 +1001,7 @@ drawbar(Monitor *m)
 	for (int i = 0; i < LENGTH(tags); i++) {
 		ttw += TEXTW(tags[i]);
 	}
-	x = (m->ww - ttw) / 2;
+	x = (m->ww - ttw - 2) / 2;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
