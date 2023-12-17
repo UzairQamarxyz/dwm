@@ -7,8 +7,9 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 8;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "IosevkaCustom Nerd Font:size=12" };
+static const int vertpadbar         = 6;        /* vertical padding for statusbar */
+static const char *fonts[]          = { "siji:size=12:antialias=true:hinting=true:autohint=true",
+                                        "IosevkaCustom Nerd Font:size=12:antialias=true:hinting=true:autohint=true"};
 static const char dmenufont[]       = "IosevkaCustom Nerd Font:size=12";
 static char normbgcolor[]           = "#222223";
 static char normbordercolor[]       = "#444444";
@@ -79,9 +80,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
     /* symbol      arrange function */
-    { "[Tile]",    tile },    /* first entry is default */
-    { "[Float]",   NULL },    /* no layout function means floating behavior */
-    { "[Monocle]", monocle },
+    { "",   tile },    /* first entry is default */
+    { "",   NULL },    /* no layout function means floating behavior */
+    { "",   monocle },
 };
 
 /* key definitions */
