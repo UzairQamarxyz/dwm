@@ -57,7 +57,8 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = {" ", "󰈹 ", "󰉋 ", "󰝚 ", "󰎁 ", "󰈙 ", "󰒱 "};
+static const char *tags[] = {"", "", "", "", "", "", ""};
+static const char *tags_sel[] = {"", "", "", "", "", "", ""};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -77,10 +78,10 @@ static const int attachbelow = 1;    /* 1 means attach after the currently activ
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
-    /* symbol     arrange function */
-    { "[]=",      tile },    /* first entry is default */
-    { "><>",      NULL },    /* no layout function means floating behavior */
-    { "[M]",      monocle },
+    /* symbol      arrange function */
+    { "[Tile]",    tile },    /* first entry is default */
+    { "[Float]",   NULL },    /* no layout function means floating behavior */
+    { "[Monocle]", monocle },
 };
 
 /* key definitions */

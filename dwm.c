@@ -818,6 +818,10 @@ drawbar(Monitor *m)
 		memcpy(scm, scheme[SchemeNorm], sizeof(scm));
 
 		drw_setscheme(drw, scm);
+		if ((w = m->ww - tw - x) > bh) {
+			drw_setscheme(drw, scheme[SchemeNorm]);
+			drw_rect(drw, x, 0, m->ww, bh, 1, 1);
+		}
 
 		for (tw = 0, wr = 0, rd = 0; stext[rd]; rd++) {
 			if (stext[rd] == '' && stext[rd + 1] == '[') {
@@ -986,25 +990,26 @@ drawbar(Monitor *m)
 		if (c->isurgent)
 			urg |= c->tags;
 	}
-	x = 0;
+
+	int ttw = 0;
+	for (int i = 0; i < LENGTH(tags); i++) {
+		ttw += TEXTW(tags[i]);
+	}
+	x = (m->ww - ttw) / 2;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
-		if (occ & 1 << i)
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-				urg & 1 << i);
+		drw_text(drw, x, 0, w, bh, lrpad / 2, m->tagset[m->seltags] & 1 << i ? tags_sel[i] : tags[i], urg & 1 << i);
+		/* if (occ & 1 << i) */
+		/* 	drw_rect(drw, x + boxs, boxs, boxw, boxw, */
+		/* 		m == selmon && selmon->sel && selmon->sel->tags & 1 << i, */
+		/* 		urg & 1 << i); */
 		x += w;
 	}
 	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+	x = drw_text(drw, 0, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
-	if ((w = m->ww - tw - x) > bh) {
-			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_rect(drw, x, 0, w, bh, 1, 1);
-	}
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
 
