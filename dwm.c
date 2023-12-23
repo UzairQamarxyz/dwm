@@ -801,7 +801,7 @@ enum SgrFlags {
 void
 drawbar(Monitor *m)
 {
-	int x, w, tw = 0;
+	int x, w, tw, cw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -809,6 +809,11 @@ drawbar(Monitor *m)
 
 	if (!m->showbar)
 		return;
+
+	if ((w = m->ww - tw - x) > bh) {
+			drw_setscheme(drw, scheme[SchemeNorm]);
+			drw_rect(drw, x, 0, w, bh, 1, 1);
+	}
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
@@ -997,24 +1002,21 @@ drawbar(Monitor *m)
 			urg |= c->tags;
 	}
 
-	int ttw = 0;
 	for (int i = 0; i < LENGTH(tags); i++) {
-		ttw += TEXTW(tags[i]);
+		cw += TEXTW(tags[i]);
 	}
-	x = (m->ww - ttw - 2) / 2;
+	cw += TEXTW(m->ltsymbol);
+
+	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-		drw_text(drw, x, 0, w, bh, lrpad / 2, m->tagset[m->seltags] & 1 << i ? tags_sel[i] : tags[i], urg & 1 << i);
-		/* if (occ & 1 << i) */
-		/* 	drw_rect(drw, x + boxs, boxs, boxw, boxw, */
-		/* 		m == selmon && selmon->sel && selmon->sel->tags & 1 << i, */
-		/* 		urg & 1 << i); */
+		drw_text(drw, (m->ww - cw) / 2 + x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 		x += w;
 	}
 	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
-	x = drw_text(drw, 0, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+	x = drw_text(drw, (m->ww - cw) / 2 + x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
