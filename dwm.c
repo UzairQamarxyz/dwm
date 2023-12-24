@@ -503,9 +503,7 @@ buttonpress(XEvent *e)
 		do
 			x += TEXTW(tags[i]);
 		while (ev->x >= x && ++i < LENGTH(tags));
-		if (ev->x >= 0 && ev->x < TEXTW(selmon->ltsymbol))
-			click = ClkLtSymbol;
-		else if (i < LENGTH(tags)) {
+		if (ev->x >= (m->ww - cw) / 2 && ev->x <= x) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
 		} else

@@ -8,8 +8,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 6;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "siji:size=12:antialias=true",
-                                        "IosevkaCustom Nerd Font:size=12:antialias=true"};
+static const char *fonts[]          = {"IosevkaCustom Nerd Font:size=12:antialias=true"};
 static const char dmenufont[]       = "IosevkaCustom Nerd Font:size=12";
 static char normbgcolor[]           = "#222223";
 static char normbordercolor[]       = "#444444";
@@ -59,7 +58,6 @@ static const char *colors[][3]      = {
 
 /* tagging */
 static const char *tags[] = {"○", "○", "○", "○", "○", "○", "○"};
-static const char *tags_sel[] = {"●", "●", "●", "●", "●", "●", "●"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -176,7 +174,7 @@ static const Key keys[] = {
 };
 
 /* button definitions */
-/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+/* click can be ClkTagBar, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
     /* click                  event mask          button          function        argument */
     { ClkStatusText,          0,                  Button2,        spawn,          {.v = termcmd} },
