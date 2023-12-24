@@ -81,7 +81,7 @@ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetClientInfo, NetLast }; /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkClientWin,
+enum { ClkTagBar, ClkStatusText, ClkClientWin,
        ClkRootWin, ClkLast }; /* clicks */
 
 typedef union {
@@ -130,7 +130,6 @@ typedef struct {
 
 typedef struct Pertag Pertag;
 struct Monitor {
-	char ltsymbol[16];
 	float mfact;
 	int nmaster;
 	int num;
@@ -445,7 +444,6 @@ arrange(Monitor *m)
 void
 arrangemon(Monitor *m)
 {
-	strncpy(m->ltsymbol, m->lt[m->sellt]->symbol, sizeof m->ltsymbol);
 	if (m->lt[m->sellt]->arrange)
 		m->lt[m->sellt]->arrange(m);
 }
@@ -496,12 +494,12 @@ buttonpress(XEvent *e)
 		focus(NULL);
 	}
 	if (ev->window == selmon->barwin) {
-		int ttw = 0;
-		for (int i = 0; i < LENGTH(tags); i++) {
-			ttw += TEXTW(tags[i]);
-		}
-		x = (m->ww - ttw) / 2;
 		i = 0;
+		int cw = 0;
+		for (int i = 0; i < LENGTH(tags); i++) {
+			cw += TEXTW(tags[i]);
+		}
+		x = (m->ww - cw) / 2;
 		do
 			x += TEXTW(tags[i]);
 		while (ev->x >= x && ++i < LENGTH(tags));
@@ -510,8 +508,7 @@ buttonpress(XEvent *e)
 		else if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
-		}
-		else
+		} else
 			click = ClkStatusText;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
@@ -713,7 +710,6 @@ createmon(void)
 	m->gappx = gappx;
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
-	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
 	m->pertag = ecalloc(1, sizeof(Pertag));
 	m->pertag->curtag = m->pertag->prevtag = 1;
 
@@ -802,8 +798,6 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, tw, cw = 0;
-	int boxs = drw->fonts->h / 9;
-	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
@@ -1005,7 +999,6 @@ drawbar(Monitor *m)
 	for (int i = 0; i < LENGTH(tags); i++) {
 		cw += TEXTW(tags[i]);
 	}
-	cw += TEXTW(m->ltsymbol);
 
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
@@ -1014,9 +1007,7 @@ drawbar(Monitor *m)
 		drw_text(drw, (m->ww - cw) / 2 + x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 		x += w;
 	}
-	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
-	x = drw_text(drw, (m->ww - cw) / 2 + x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
@@ -1463,8 +1454,6 @@ monocle(Monitor *m)
 	for (c = m->clients; c; c = c->next)
 		if (ISVISIBLE(c))
 			n++;
-	if (n > 0) /* override layout symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
 		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 }
@@ -1951,7 +1940,6 @@ setlayout(const Arg *arg)
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag] ^= 1;
 	if (arg && arg->v)
 		selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] = (Layout *)arg->v;
-	strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol, sizeof selmon->ltsymbol);
 	if (selmon->sel)
 		arrange(selmon);
 	else
