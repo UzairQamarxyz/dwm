@@ -1,95 +1,67 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
-static const unsigned int gappx     = 10;        /* gaps between windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 8;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "IosevkaCustom Nerd Font:size=12" };
-static const char dmenufont[]       = "IosevkaCustom Nerd Font:size=12";
-static char normbgcolor[]           = "#222223";
-static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#005577";
-static char selbgcolor[]            = "#005577";
-static char barcol0[] = "#000000"; /* black   */
-static char barcol1[] = "#ff0000"; /* red     */
-static char barcol2[] = "#33ff00"; /* green   */
-static char barcol3[] = "#ff0099"; /* yellow  */
-static char barcol4[] = "#0066ff"; /* blue    */
-static char barcol5[] = "#cc00ff"; /* magenta */
-static char barcol6[] = "#00ffff"; /* cyan    */
-static char barcol7[] = "#d0d0d0"; /* white   */
-static char barcol8[]  = "#808080"; /* black   */
-static char barcol9[]  = "#ff0000"; /* red     */
-static char barcol10[] = "#33ff00"; /* green   */
-static char barcol11[] = "#ff0099"; /* yellow  */
-static char barcol12[] = "#0066ff"; /* blue    */
-static char barcol13[] = "#cc00ff"; /* magenta */
-static char barcol14[] = "#00ffff"; /* cyan    */
-static char barcol15[] = "#ffffff"; /* white   */
-static char *barcolors[] = {
-  barcol0,
-  barcol1,
-  barcol2,
-  barcol3,
-  barcol4,
-  barcol5,
-  barcol6,
-  barcol7,
-  barcol8,
-  barcol9,
-  barcol10,
-  barcol11,
-  barcol12,
-  barcol13,
-  barcol14,
-  barcol15,
-};
-static const char *colors[][3]      = {
-    /*               fg         bg         border   */
-    [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-    [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+static const unsigned int borderpx = 0; /* border pixel of windows */
+static const unsigned int gappx = 10;       /* gap pixel between windows */
+static const unsigned int snap = 16;    /* snap pixel */
+static const int showbar = 1;           /* 0 means no bar */
+static const int topbar = 1;            /* 0 means bottom bar */
+static const int horizpadbar = 2;        /* horizontal padding for statusbar */
+static const int vertpadbar = 15;        /* vertical padding for statusbar */
+static const int vertpad = 10;       /* vertical padding of bar */
+static const int sidepad = 10;       /* horizontal padding of bar */
+static const char *fonts[] = {"siji:size=11", "IosevkaCustom Nerd Font:size=11"};
+static const char dmenufont[] = "IosevkaCustom Nerd Font:size=11";
+
+/* Kanagawa */
+static const char normbgcolor[] = "#1F1F28";
+static const char normbordercolor[] = "#727169";
+static const char normfgcolor[] = "#DCD7BA";
+static const char selfgcolor[] = "#7E9CD8";
+static const char selbgcolor[] = "#1F1F28";
+static const char selbordercolor[] = "#7FB4CA";
+static const char *colors[][3] = {
+    /*              fg             bg             border   */
+    [SchemeNorm] = {normfgcolor, normbgcolor, normbordercolor},
+    [SchemeSel] = {selfgcolor, selbgcolor, selbordercolor},
 };
 
 /* tagging */
-static const char *tags[] = {" ", "󰈹 ", "󰉋 ", "󰝚 ", "󰎁 ", "󰈙 ", "󰒱 "};
-
+static const char *tags[] = { "○", "○", "○", "○", "○", "○", "○" };
+static const char *alttags[] = { "●", "●", "●", "●", "●", "●", "●" };
 static const Rule rules[] = {
     /* xprop(1):
-     *  WM_CLASS(STRING) = instance, class
-     *  WM_NAME(STRING) = title
+     *	WM_CLASS(STRING) = instance, class
+     *	WM_NAME(STRING) = title
      */
     /* class      instance    title       tags mask     isfloating   monitor */
-    { "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
-    { "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
+    {"Gimp", NULL, NULL, 0, 1, -1},
+    {"Firefox", NULL, NULL, 1 << 8, 0, -1},
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
-static const int attachbelow = 1;    /* 1 means attach after the currently active window */
-static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
+static const int nmaster = 1;    /* number of clients in master area */
+static const int resizehints =
+    1; /* 1 means respect size hints in tiled resizals */
+static const int lockfullscreen =
+    1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    { "[]=",      tile },    /* first entry is default */
-    { "><>",      NULL },    /* no layout function means floating behavior */
-    { "[M]",      monocle },
+    {"", tile}, /* first entry is default */
+    {"", NULL}, /* no layout function means floating behavior */
+    {"", monocle},
 };
 
 /* key definitions */
 #define MODKEY Mod4Mask
-#define TAGKEYS(KEY,TAG) \
-    { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-    { MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-    { MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-    { MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+#define TAGKEYS(KEY, TAG)                                                      \
+  {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
+      {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
+      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
+      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
+
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/usr/bin/env", "bash", "-c", cmd, NULL } }
@@ -99,7 +71,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = {"dmenu_run", "-m", dmenumon, NULL};
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *emacs[]  = { "emacsclient", "-c", "-a", "'emacs'", NULL };
-static const char *browser[]  = { "librewolf", NULL };
+static const char *browser[]  = { "floorp", NULL };
 static const char *ranger[] = {"alacritty", "-e", "ranger", NULL};
 static const char *cmus[] = {"alacritty", "-e", "cmus", NULL};
 static const char *nmtui[]  = { "alacritty", "-e", "nmtui", NULL };
@@ -158,7 +130,6 @@ static const Key keys[] = {
     { MODKEY,                       XK_period,                focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,             XK_comma,                 tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period,                tagmon,         {.i = +1 } },
-    { MODKEY,                       XK_F5,                    xrdb,           {.v = NULL } },
     { MODKEY,                       XK_Right,                 viewnext,       {0} },
     { MODKEY,                       XK_Left,                  viewprev,       {0} },
     { MODKEY|ShiftMask,             XK_Right,                 tagtonext,      {0} },
