@@ -6,7 +6,7 @@ static const unsigned int gappx = 10;       /* gap pixel between windows */
 static const unsigned int snap = 16;    /* snap pixel */
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
-static const int horizpadbar = 2;        /* horizontal padding for statusbar */
+static const int horizpadbar = 15;        /* horizontal padding for statusbar */
 static const int vertpadbar = 15;        /* vertical padding for statusbar */
 static const int vertpad = 10;       /* vertical padding of bar */
 static const int sidepad = 10;       /* horizontal padding of bar */
@@ -27,8 +27,8 @@ static const char *colors[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = { "○", "○", "○", "○", "○", "○", "○" };
-static const char *alttags[] = { "●", "●", "●", "●", "●", "●", "●" };
+static const char *tags[] = { "◯", "◯", "◯", "◯", "◯", "◯", "◯" };
+static const char *alttags[] = { "⬤", "⬤", "⬤", "⬤", "⬤", "⬤", "⬤" };
 static const Rule rules[] = {
     /* xprop(1):
      *	WM_CLASS(STRING) = instance, class

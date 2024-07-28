@@ -27,6 +27,7 @@
 #include <X11/cursorfont.h>
 #include <X11/keysym.h>
 #include <errno.h>
+#include <fribidi.h>
 #include <locale.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -171,6 +172,7 @@ typedef struct {
 } Rule;
 
 /* function declarations */
+static void apply_fribidi(char *str);
 static void applyrules(Client *c);
 static int applysizehints(Client *c, int *x, int *y, int *w, int *h,
                           int interact);
@@ -284,6 +286,7 @@ static const char broken[] = "broken";
 static const char dwmdir[] = "dwm";
 static const char localshare[] = ".local/share";
 static char stext[256];
+static char fribidi_text[256];
 static int screen;
 static int sw, sh; /* X display screen geometry width, height */
 static int bh;     /* bar height */
@@ -326,6 +329,21 @@ struct NumTags {
 };
 
 /* function implementations */
+void
+apply_fribidi(char *str)
+{
+	FriBidiStrIndex len = strlen(str);
+	FriBidiChar logical[256];
+	FriBidiChar visual[256];
+	FriBidiParType base = FRIBIDI_PAR_ON;
+	FriBidiCharSet charset;
+
+	charset = fribidi_parse_charset("UTF-8");
+	len = fribidi_charset_to_unicode(charset, str, len, logical);
+	fribidi_log2vis(logical, len, &base, visual, NULL, NULL, NULL);
+	fribidi_unicode_to_charset(charset, visual, len, fribidi_text);
+}
+
 void applyrules(Client *c) {
   const char *class, *instance;
   unsigned int i;
@@ -468,7 +486,7 @@ void attachstack(Client *c) {
 }
 
 void buttonpress(XEvent *e) {
-  unsigned int i, x, click;
+  unsigned int i, x, click, occ;
   Arg arg = {0};
   Client *c;
   Monitor *m;
@@ -482,9 +500,13 @@ void buttonpress(XEvent *e) {
     focus(NULL);
   }
   if (ev->window == selmon->barwin) {
-    i = x = 0;
+    i = x = occ = 0;
+    /* Bitmask of occupied tags */
+    for (c = m->clients; c; c = c->next)
+      occ |= c->tags;
+
     do
-      x += TEXTW(tags[i]);
+      x += TEXTW(occ & 1 << i ? alttags[i] : tags[i]);
     while (ev->x >= x && ++i < LENGTH(tags));
     if (i < LENGTH(tags)) {
       click = ClkTagBar;
@@ -761,7 +783,7 @@ void drawbar(Monitor *m) {
     drw_setscheme(
         drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
     drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
-    tagtext = m->tagset[m->seltags] & 1 << i ? alttags[i] : tags[i];
+    tagtext = occ & 1 << i ? alttags[i] : tags[i];
     w = TEXTW(tagtext);
     drw_setscheme(
         drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
@@ -779,7 +801,8 @@ void drawbar(Monitor *m) {
       /* make sure name will not overlap on tags even when it is very long */
       mid = mid >= lrpad / 2 ? mid : lrpad / 2;
       drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-      drw_text(drw, x, 0, w - 2 * sp, bh, mid, m->sel->name, 0);
+  	  apply_fribidi(m->sel->name);
+  	  drw_text(drw, x, 0, w - 2 * sp, bh, mid, fribidi_text, 0);
       if (m->sel->isfloating)
         drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
     } else {
