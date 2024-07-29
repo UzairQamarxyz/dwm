@@ -43,7 +43,7 @@ static const Rule rules[] = {
 static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster = 1;    /* number of clients in master area */
 static const int resizehints =
-    1; /* 1 means respect size hints in tiled resizals */
+    0; /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen =
     1; /* 1 will force focus on the fullscreen window */
 
@@ -71,7 +71,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = {"dmenu_run", "-m", dmenumon, NULL};
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *emacs[]  = { "emacsclient", "-c", "-a", "'emacs'", NULL };
-static const char *browser[]  = { "floorp", NULL };
+static const char *browser[]  = { "librewolf", NULL };
 static const char *ranger[] = {"alacritty", "-e", "ranger", NULL};
 static const char *cmus[] = {"alacritty", "-e", "cmus", NULL};
 static const char *nmtui[]  = { "alacritty", "-e", "nmtui", NULL };
