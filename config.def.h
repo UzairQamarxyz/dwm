@@ -26,6 +26,10 @@ static const char *colors[][3] = {
     [SchemeSel] = {selfgcolor, selbgcolor, selbordercolor},
 };
 
+/* swallow emacs */
+static const char emacsclient[] = "emacsclient";
+static const char emacsname[] = "emacs@";
+
 /* tagging */
 static const char *tags[] = { "◯", "◯", "◯", "◯", "◯", "◯", "◯" };
 static const char *alttags[] = { "⬤", "⬤", "⬤", "⬤", "⬤", "⬤", "⬤" };
@@ -77,8 +81,8 @@ static const char *cmus[] = {"alacritty", "-e", "cmus", NULL};
 static const char *nmtui[]  = { "alacritty", "-e", "nmtui", NULL };
 static const char *lockscreen[]  = { "betterlockscreen", "--lock", NULL };
 static const char *screenshot[]  = { "flameshot", "gui", NULL };
-static const char *brightnessup[]  = { "brightnessctl", "set", "10%+", NULL };
-static const char *brightnessdown[]  = { "brightnessctl", "set", "10%-", NULL };
+static const char *brightnessup[]  = { "brightnessctl", "set", "2.5%+", NULL };
+static const char *brightnessdown[]  = { "brightnessctl", "set", "2.5%-", NULL };
 
 #include <X11/XF86keysym.h>
 
@@ -99,9 +103,9 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_bracketleft,           spawn,          SHCMD("cmus-remote --seek -10 && pkill -RTMIN+20 dwmblocks")},
     { MODKEY,                       XK_bracketright,          spawn,          SHCMD("cmus-remote --next && pkill -RTMIN+20 dwmblocks")},
     { MODKEY|ShiftMask,             XK_bracketright,          spawn,          SHCMD("cmus-remote --seek +10 && pkill -RTMIN+20 dwmblocks")},
-    { 0,                            XF86XK_AudioMute,         spawn,          SHCMD("amixer set Master toggle && pkill -RTMIN+10 dwmblocks")},
-    { 0,                            XF86XK_AudioRaiseVolume,  spawn,          SHCMD("amixer set Master 5%+ && pkill -RTMIN+10 dwmblocks")},
-    { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer set Master 5%- && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5% && pkill -RTMIN+10 dwmblocks")},
     { 0,                            XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup}},
     { 0,                            XF86XK_MonBrightnessDown, spawn,          {.v = brightnessdown}},
 
