@@ -154,3 +154,7 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
+
+/* torus config */
+static int torusenabled = 1;
+static int wormholedelta = 1; // how close to the edge do we get before we take a wormhole to the other side.
