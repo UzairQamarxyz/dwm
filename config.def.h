@@ -64,12 +64,12 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]        = {"dmenu_run", "-m", dmenumon, NULL};
+static const char *dmenucmd[]        = { "dmenu_run", "-m", dmenumon, NULL};
 static const char *termcmd[]         = { "alacritty", NULL };
 static const char *emacs[]           = { "emacsclient", "-c", "-a", "'emacs'", NULL };
-static const char *browser[]         = { "librewolf", NULL };
-static const char *ranger[]          = {"alacritty", "-e", "ranger", NULL};
-static const char *cmus[]            = {"alacritty", "-e", "cmus", NULL};
+static const char *browser[]         = { "floorp", NULL };
+static const char *ranger[]          = { "alacritty", "-e", "ranger", NULL};
+static const char *cmus[]            = { "alacritty", "-e", "cmus", NULL};
 static const char *nmtui[]           = { "alacritty", "-e", "nmtui", NULL };
 static const char *lockscreen[]      = { "betterlockscreen", "--lock", NULL };
 static const char *screenshot[]      = { "flameshot", "gui", NULL };
@@ -95,9 +95,9 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_bracketleft,           spawn,          SHCMD("cmus-remote --seek -10 && pkill -RTMIN+20 dwmblocks")},
     { MODKEY,                       XK_bracketright,          spawn,          SHCMD("cmus-remote --next && pkill -RTMIN+20 dwmblocks")},
     { MODKEY|ShiftMask,             XK_bracketright,          spawn,          SHCMD("cmus-remote --seek +10 && pkill -RTMIN+20 dwmblocks")},
-    { 0,                            XF86XK_AudioMute,         spawn,          SHCMD("pamixer -t && pkill -RTMIN+10 dwmblocks")},
-    { 0,                            XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pamixer -i 5 && pkill -RTMIN+10 dwmblocks")},
-    { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("pamixer -d 5 && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioMute,         spawn,          SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioRaiseVolume,  spawn,          SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+10 dwmblocks")},
+    { 0,                            XF86XK_AudioLowerVolume,  spawn,          SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+10 dwmblocks")},
     { 0,                            XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup}},
     { 0,                            XF86XK_MonBrightnessDown, spawn,          {.v = brightnessdown}},
 
@@ -143,18 +143,18 @@ static const Key keys[] = {
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	/* click                event mask                button          function        argument */
+	{ ClkLtSymbol,          0,                        Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,                        Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkWinTitle,          0,                        Button2,        zoom,           {0} },
+	{ ClkStatusText,        0,                        Button2,        spawn,          {.v = termcmd } },
+	{ ClkClientWin,         MODKEY,                   Button1,        movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,                   Button2,        togglefloating, {0} },
+	{ ClkClientWin,         MODKEY|ShiftMask,         Button1,        resizemouse,    {0} },
+	{ ClkTagBar,            0,                        Button1,        view,           {0} },
+	{ ClkTagBar,            0,                        Button3,        toggleview,     {0} },
+	{ ClkTagBar,            MODKEY,                   Button1,        tag,            {0} },
+	{ ClkTagBar,            MODKEY,                   Button3,        toggletag,      {0} },
 };
 
 /* torus config */
